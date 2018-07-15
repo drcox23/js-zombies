@@ -8,6 +8,14 @@
  * @property {string} name
  */
 
+ class Item {
+   constructor(name){
+     this.name = name
+   }
+
+ }
+ const newItem = new Item('hat'); 
+//  console.log(newItem);
 
 /**
  * Class => Weapon(name, damage)
@@ -25,13 +33,23 @@
  * @property {number} damage
  */
 
+ class Weapon extends Item{
+   constructor(name, damage){
+     super(name);
+     this.damage = damage
+   }
+ }
+
+
+//  const daWeapon = new Weapon('Excalibur', 50);
+//  console.log(daWeapon.damage);
 
 /**
  * Weapon Extends Item Class
  * -----------------------------
  */
 
-
+// console.log(Weapon);
 
 /**
  * Class => Food(name, energy)
@@ -48,6 +66,15 @@
  * @param {number} energy     The energy the food provides.
  * @property {number} energy
  */
+
+ class Food extends Item{
+   constructor(name, energy){
+     super(name);
+     this.energy = energy
+   }
+ }
+//  const daEnergy = new Food('berry', 75);
+//  console.log(daEnergy.name);
 
 
 /**
@@ -79,6 +106,99 @@
  * @property {method} getMaxHealth         Returns private variable `maxHealth`.
  */
 
+ class Player{
+   constructor(name, health, strength, speed){
+     this.name = name;
+     this.health = health;
+     this.strength = strength;
+     this.speed = speed;
+     this._pack = [];
+     this._maxHealth = health; 
+     this.isAlive = true;
+     this.equipped = false;
+     
+   }
+
+   getPack(){
+     return this._pack;
+   }
+   getMaxHealth(){
+     return this._maxHealth;
+   }
+   
+   takeItem(item){
+     let inThePack = this._pack;
+     console.log(inThePack);
+     if (this._pack.length < 3){
+      this._pack.push(item);
+      return inThePack;
+     }else{
+       console.log("the pack is full so the item could not be stored");
+       return false;
+     }
+   }
+
+   discardItem(item){
+     let theItem = this._pack.indexOf(item);
+     console.log(theItem);
+     if (theItem === -1){
+       console.log("Nothing was discarded since the " + item + " could not be found")
+       return false;
+     }else{
+       this._pack.splice(theItem, 1)
+       return true;
+     }
+     console.log(theItem);
+   }
+
+   checkPack(){
+     console.log(this.getPack());
+     return this.getPack();
+
+   }
+
+   equip(itemToEquip){
+     console.log(itemToEquip);
+     console.log(itemToEquip instanceof (Weapon));
+    //  console.log(this.equipped);
+
+      if (this._pack.indexOf(itemToEquip) >= 0 && itemToEquip instanceof (Weapon)===true){
+        if (this.equipped == false) {
+          console.log(itemToEquip);
+          const equipMe = this._pack.indexOf(itemToEquip);
+          this.equipped = itemToEquip;
+          this._pack.splice(equipMe, 1);
+        }else{
+          console.log(itemToEquip);
+          this._pack.push(this.equipped);
+          let changeWeapon = this._pack.indexOf(itemToEquip);
+          this.equipped = itemToEquip;
+          this._pack.splice(changeWeapon, 1);
+        }
+      }else{
+        console.log("item does not exist")
+      }
+   }
+
+   eat(itemToEat){
+     console.log(itemToEat);
+     console.log(itemToEat instanceof (Food));
+     let getHealthy = this._pack.indexOf(itemToEat);
+     if (getHealthy >= 0 && itemToEat instanceof (Food) === true){
+       if (this.health + itemToEat.energy > 100){
+         this.health = 100;
+         this._pack.splice(getHealthy, 1)
+       }else{
+         this.health += itemToEat.energy
+       }else{
+         console.log('there is no food...')
+       }
+     }
+   }
+
+ };
+
+
 
 /**
  * Player Class Method => checkPack()
@@ -91,6 +211,7 @@
  *
  * @name checkPack
  */
+
 
 
 /**
