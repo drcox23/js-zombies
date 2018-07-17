@@ -185,16 +185,44 @@
      console.log(itemToEat instanceof (Food));
      let getHealthy = this._pack.indexOf(itemToEat);
      if (getHealthy >= 0 && itemToEat instanceof (Food) === true){
-       if (this.health + itemToEat.energy > 100){
-         this.health = 100;
+       if (this.health + itemToEat.energy > this._maxHealth){
+         this.health = this._maxHealth;
          this._pack.splice(getHealthy, 1)
        }else{
-         this.health += itemToEat.energy
-       }else{
-         console.log('there is no food...')
+         this.health = this.health + itemToEat.energy;
+         this._pack.splice(getHealthy, 1);
        }
-     }
+    }else{
+      console.log('there is no food...');
+    }
    }
+
+  useItem(item){
+    console.log(item);
+    let useDaItem = this._pack.indexOf(item);
+    if (useDaItem >= 0){
+      if (item instanceof (Weapon) === true){
+        this.equip(item);
+      }else if (item instanceof (Food)=== true){
+        this.eat(item);
+      }else{
+        console.log("why tho")
+      }
+    }else{
+      console.log("why tho")
+    }
+  }
+
+  equippedWith(){
+    console.log(this.equipped)
+    if (this.equipped instanceof (Weapon) === true){
+      console.log(this.name + " is equipped with " + this.equipped);
+      return this.equipped.name;
+    }else{
+      console.log("you are not equipped");
+      return false;
+    }
+  }
 
  };
 
@@ -346,6 +374,16 @@
  * @property {boolean} isAlive      Default value should be `true`.
  */
 
+ class Zombie {
+   constructor (health, strength, speed){
+     this.health = health;
+     this.strength = strength;
+     this.speed = speed;
+     this._maxHealth = health;
+     this.isAlive = true;
+
+   }
+ }
 
 /**
  * Class => FastZombie(health, strength, speed)
@@ -362,6 +400,12 @@
  * @param {number} speed            The zombie's speed.
  */
 
+  class FastZombie extends Zombie{
+    constructor (health, strength, speed){
+      super(health, strength, speed);
+    }
+
+  }
 
 /**
  * FastZombie Extends Zombie Class
@@ -384,6 +428,12 @@
  * @param {number} strength         The zombie's strength.
  * @param {number} speed            The zombie's speed.
  */
+
+class StrongZombie extends Zombie{
+  constructor(health, strength, speed){
+    super (health, strength, speed);
+  }
+}
 
 
 /**
@@ -414,6 +464,11 @@
  * -----------------------------
  */
 
+ class RangedZombie extends Zombie{
+   constructor (health, strength, speed){
+     super (health, strength, speed)
+   }
+ }
 
 
 /**
@@ -437,7 +492,11 @@
  * -----------------------------
  */
 
-
+ class ExplodingZombie extends Zombie{
+   constructor (health, strength, speed){
+     super (health, strength, speed);
+   }
+ }
 
 
 /**
